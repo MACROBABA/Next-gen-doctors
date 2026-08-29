@@ -1,0 +1,11 @@
+# ⚠️ Gemini API açarı — bu faylı HƏÇ VAXT push etməyin!
+# API açarınızı yalnız bu faylın içində saxlayın.
+assets/gemini-config.js
+
+# Əməliyyat sistemi faylları
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Müvəqqəti qovluqlar
+_tmp/

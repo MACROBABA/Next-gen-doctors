@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"/c/Users/Admin/AppData/Local/Packages/5319275A.WhatsAppDesktop_cv1g1gvanyjgm/LocalState/sessions/5D4F4A7CEE6BB28BB20D1273E8A16A8777183D21/transfers/2026-31/\" 2>&1)",
+      "Bash(pandoc -t markdown \"/c/Users/Admin/AppData/Local/Packages/5319275A.WhatsAppDesktop_cv1g1gvanyjgm/LocalState/sessions/5D4F4A7CEE6BB28BB20D1273E8A16A8777183D21/transfers/2026-31/NGD haqqımızda.docx\")",
+      "PowerShell(Get-Command py -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command python3 -ErrorAction SilentlyContinue)",
+      "Bash(node \"/c/Users/Admin/AppData/Local/Temp/claude/D--NEXT-GEN-DOCTORS/e123d5e7-9796-4807-967e-7f4b4caf5b56/scratchpad/extract_pptx.js\" \"/c/Users/Admin/AppData/Local/Temp/claude/D--NEXT-GEN-DOCTORS/e123d5e7-9796-4807-967e-7f4b4caf5b56/scratchpad/ngd_pptx/unpacked/ppt/slides\")",
+      "Bash(find \"/c/Users/Admin/AppData/Local/Temp\" -iname \"*.png\" -newermt \"-10 minutes\" 2>/dev/null | grep -vi \"node_modules\" *)",
+      "Read(//c/Users/Admin/AppData/Local/Packages/5319275A.WhatsAppDesktop_cv1g1gvanyjgm/LocalState/sessions/**)",
+      "Bash(mkdir -p \"/d/NEXT-GEN-DOCTORS/assets\" *)",
+      "Bash(node histogram_colors.js)",
+      "Bash(node process_assets.js)",
+      "Bash(node crop_mark2.js)"
+    ]
+  }
+}

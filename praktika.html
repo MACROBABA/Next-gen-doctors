@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praktika — Next Gen Doctors</title>
+<meta name="description" content="Next Gen Doctors icmasında iştirakçıların təcrübə və rəyləri. Həkimlərlə praktika, seminar və tədbirlərdən ballar.">
+<!-- Open Graph / social share -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Next Gen Doctors">
+<meta property="og:locale" content="az_AZ">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://ngd.az/praktika.html">
+<meta property="og:title" content="Praktika — Next Gen Doctors">
+<meta property="og:description" content="Next Gen Doctors icmasında iştirakçıların təcrübə və rəyləri.">
+<meta property="og:image" content="https://ngd.az/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Next Gen Doctors">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Praktika — Next Gen Doctors">
+<meta name="twitter:description" content="Next Gen Doctors icmasında iştirakçıların təcrübə və rəyləri.">
+<meta name="twitter:image" content="https://ngd.az/assets/og-image.png">
+<link rel="icon" type="image/png" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* ---- Praktika page ---- */
+  .praktika-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.5rem; margin-top:2.5rem; }
+
+  /* -- Flip card -- */
+  .testi-card{
+    position:relative; border-radius:20px; overflow:hidden;
+    cursor:pointer; perspective:900px;
+    min-height:400px;
+  }
+  .testi-card-inner{
+    position:relative; width:100%; height:100%; min-height:400px;
+    transition:transform .6s cubic-bezier(.4,0,.2,1);
+    transform-style:preserve-3d;
+  }
+  .testi-card:hover .testi-card-inner{ transform:rotateY(180deg); }
+
+  /* Front */
+  .testi-front, .testi-back{
+    position:absolute; inset:0; border-radius:20px; overflow:hidden;
+    -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  }
+
+  .testi-front{
+    background:var(--bg-raised); border:1px solid var(--line);
+    display:flex; flex-direction:column;
+  }
+  .testi-front-photo{ position:relative; flex:1; overflow:hidden; }
+  .testi-front-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .testi-front-photo .photo-label{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:1.2rem 1.4rem;
+    background:linear-gradient(to top, rgba(10,16,48,0.85) 0%, transparent 100%);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .testi-front-name{ font-family:var(--display); font-weight:700; font-size:1.05rem; color:#fff; }
+  .testi-front-role{ font-size:0.82rem; color:rgba(255,255,255,0.7); margin-top:0.15rem; }
+  .testi-front-arrow{
+    width:40px; height:40px; border-radius:50%;
+    background:var(--green); color:#fff; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; transition:background .3s ease;
+  }
+  .testi-front-arrow svg{ width:18px; height:18px; }
+
+  /* Back */
+  .testi-back{
+    background:var(--navy-deep); transform:rotateY(180deg);
+    display:flex; flex-direction:column; padding:2rem 1.8rem;
+    color:#fff;
+  }
+  .testi-back-header{ margin-bottom:1rem; }
+  .testi-back-name{ font-family:var(--display); font-weight:700; font-size:1.1rem; color:#fff; }
+  .testi-back-role{ font-size:0.82rem; color:var(--fg-muted-inverse); margin-top:0.2rem; }
+  .testi-back-divider{ width:36px; height:3px; background:var(--green); border-radius:2px; margin:0.8rem 0; }
+  .testi-back-text{ flex:1; font-size:0.85rem; line-height:1.65; color:rgba(255,255,255,0.88); font-style:italic; overflow-y:auto; padding-right:0.3rem; }
+  .testi-back-text::-webkit-scrollbar{ width:3px; }
+  .testi-back-text::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.2); border-radius:2px; }
+  .testi-back-text::before{ content:'\201C'; font-family:var(--display); font-size:2.2rem; color:var(--green); line-height:0; vertical-align:-0.4rem; margin-right:0.15rem; }
+  .testi-back-footer{ display:flex; align-items:center; justify-content:space-between; margin-top:1rem; }
+  .testi-back-read{ font-size:0.78rem; font-weight:600; color:var(--green); letter-spacing:0.06em; text-transform:uppercase; display:inline-flex; align-items:center; gap:0.3rem; }
+  .testi-back-read svg{ width:14px; height:14px; }
+  .testi-back-arrow{ width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.25); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:border-color .3s ease; }
+  .testi-card:hover .testi-back-arrow{ border-color:var(--green); }
+  .testi-back-arrow svg{ width:16px; height:16px; }
+
+  /* Empty card */
+  .testi-card-empty{
+    background:var(--bg-raised); border:2px dashed var(--line); border-radius:20px;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.8rem; color:var(--slate-2); min-height:400px;
+  }
+  .testi-card-empty .empty-icon{ width:48px; height:48px; opacity:0.4; }
+  .testi-card-empty span{ font-size:0.88rem; }
+
+  /* ---- Modal ---- */
+  .testi-modal-overlay{
+    position:fixed; inset:0; background:rgba(10,16,48,0.7); -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px); z-index:9999; display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .3s ease; padding:1.5rem;
+  }
+  .testi-modal-overlay.active{ opacity:1; pointer-events:auto; }
+
+  .testi-modal{
+    background:#fff; border-radius:24px; max-width:560px; width:100%; max-height:90vh; overflow-y:auto;
+    transform:translateY(30px) scale(0.96); transition:transform .35s cubic-bezier(.4,0,.2,1);
+    position:relative;
+  }
+  .testi-modal-overlay.active .testi-modal{ transform:translateY(0) scale(1); }
+
+  .testi-modal-close{
+    position:absolute; top:1rem; right:1rem; z-index:10;
+    width:36px; height:36px; border-radius:50%; border:none;
+    background:rgba(255,255,255,0.9); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .2s ease;
+  }
+  .testi-modal-close:hover{ background:#fff; }
+  .testi-modal-close svg{ width:18px; height:18px; color:var(--fg); }
+
+  .testi-modal-photo{ width:100%; height:260px; object-fit:cover; border-radius:24px 24px 0 0; }
+  .testi-modal-photo-placeholder{
+    width:100%; height:160px; background:var(--bg-raised);
+    border-radius:24px 24px 0 0; display:flex; align-items:center; justify-content:center;
+  }
+  .testi-modal-photo-placeholder svg{ width:64px; height:64px; color:var(--slate-2); opacity:0.3; }
+
+  .testi-modal-body{ padding:1.8rem 2rem 2rem; }
+  .testi-modal-name{ font-family:var(--display); font-weight:700; font-size:1.2rem; color:var(--fg); }
+  .testi-modal-role{ font-size:0.9rem; color:var(--fg-muted); margin-top:0.2rem; }
+  .testi-modal-divider{ width:40px; height:3px; background:var(--green); border-radius:2px; margin:1.2rem 0; }
+  .testi-modal-text{ font-size:0.95rem; line-height:1.75; color:var(--fg); }
+  .testi-modal-text::before{ content:'"'; font-family:var(--display); font-size:2.5rem; color:var(--green); line-height:0; vertical-align:-0.5rem; margin-right:0.2rem; }
+
+  @media (max-width:640px){
+    .praktika-grid{ grid-template-columns:1fr; }
+    .testi-modal-body{ padding:1.4rem 1.5rem 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="notice">
+  <div class="notice-contact">
+    <a href="tel:+994772441903"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.3 0 .7-.2 1L6.6 10.8Z"></path></svg>+994 77 244 19 03</a>
+    <a href="mailto:nextgendoctors@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>nextgendoctors@gmail.com</a>
+  </div>
+  <div class="notice-msg">
+  <span data-lang="az">© 2024–2026 Next Gen Doctors. Bütün hüquqlar qorunur.</span>
+  <span data-lang="en">© 2024–2026 Next Gen Doctors. All rights reserved.</span>
+  </div>
+  <div class="notice-social">
+    <a href="https://instagram.com/nextgendoctorss" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/social-instagram.png" alt="" width="96" height="96"></a>
+    <a href="https://tiktok.com/@nextgendoctors" target="_blank" rel="noopener" aria-label="TikTok"><img src="assets/social-tiktok.png" alt="" width="96" height="96"></a>
+    <a href="https://youtube.com/@nextgendoctors" target="_blank" rel="noopener" aria-label="YouTube"><img src="assets/social-youtube.png" alt="" width="96" height="96"></a>
+    <a href="https://linkedin.com/company/next-gen-doctors" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/social-linkedin.png" alt="" width="96" height="96"></a>
+    <a href="https://wa.me/994772441903" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/social-whatsapp.png" alt="" width="96" height="96"></a>
+    <a href="https://t.me/nextgendoctors" target="_blank" rel="noopener" aria-label="Telegram"><img src="assets/social-telegram.png" alt="" width="96" height="96"></a>
+  </div>
+</div>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/logo-mark.png" alt="Next Gen Doctors" width="309" height="160">
+      <span class="brand-text">Next Gen Doctors</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="haqqimizda.html"><span data-lang="az">Haqqımızda</span><span data-lang="en">About</span></a></li>
+      <li class="has-dropdown">
+        <a class="dropdown-trigger" href="index.html#fealiyyetler">
+          <span data-lang="az">Fəaliyyətlər</span><span data-lang="en">Activities</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </a>
+        <div class="dropdown-panel">
+          <ul>
+            <li><a href="vebinar.html"><span data-lang="az">Vebinar</span><span data-lang="en">Webinar</span></a></li>
+            <li><a href="seminar-masterklass.html"><span data-lang="az">Seminar &amp; Master-klass</span><span data-lang="en">Seminars &amp; Masterclasses</span></a></li>
+            <li><a href="infotur.html"><span data-lang="az">İnfotur</span><span data-lang="en">Info-Tours</span></a></li>
+            <li><a href="sehar-yemeyi.html"><span data-lang="az">Səhər Yeməyi &amp; Oxu</span><span data-lang="en">Breakfast &amp; Reading</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a href="konfrans.html"><span data-lang="az">Konfranslar</span><span data-lang="en">Conferences</span></a></li>
+      <li><a href="praktika.html" class="active"><span data-lang="az">Praktika</span><span data-lang="en">Practice</span></a></li>
+      <li><a href="index.html#baxis"><span data-lang="az">Tərəfdaşlar</span><span data-lang="en">Partners</span></a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle" id="langToggle">
+        <button type="button" data-set-lang="az">AZ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+      <a class="btn btn-primary nav-cta-desktop" href="index.html#qosul">
+        <span data-lang="az">İcmaya Qoşul</span><span data-lang="en">Join Us</span>
+      </a>
+      <button type="button" class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-menu-links">
+      <li><a href="haqqimizda.html"><span data-lang="az">Haqqımızda</span><span data-lang="en">About</span></a></li>
+      <li class="mobile-group">
+        <a href="index.html#fealiyyetler"><span data-lang="az">Fəaliyyətlər</span><span data-lang="en">Activities</span></a>
+        <ul class="mobile-submenu">
+          <li><a href="vebinar.html"><span data-lang="az">— Vebinar</span><span data-lang="en">— Webinar</span></a></li>
+          <li><a href="seminar-masterklass.html"><span data-lang="az">— Seminar &amp; Master-klass</span><span data-lang="en">— Seminars &amp; Masterclasses</span></a></li>
+          <li><a href="infotur.html"><span data-lang="az">— İnfotur</span><span data-lang="en">— Info-Tours</span></a></li>
+          <li><a href="sehar-yemeyi.html"><span data-lang="az">— Səhər Yeməyi &amp; Oxu</span><span data-lang="en">— Breakfast &amp; Reading</span></a></li>
+        </ul>
+      </li>
+      <li><a href="konfrans.html"><span data-lang="az">Konfranslar</span><span data-lang="en">Conferences</span></a></li>
+      <li><a href="praktika.html"><span data-lang="az">Praktika</span><span data-lang="en">Practice</span></a></li>
+      <li><a href="index.html#baxis"><span data-lang="az">Tərəfdaşlar</span><span data-lang="en">Partners</span></a></li>
+    </ul>
+    <a class="btn btn-primary btn-mobile-cta" href="index.html#qosul">
+      <span data-lang="az">İcmaya Qoşul</span><span data-lang="en">Join Us</span>
+    </a>
+    <div class="mobile-social">
+      <a href="https://instagram.com/nextgendoctorss" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/social-instagram.png" alt="" width="96" height="96"></a>
+      <a href="https://tiktok.com/@nextgendoctors" target="_blank" rel="noopener" aria-label="TikTok"><img src="assets/social-tiktok.png" alt="" width="96" height="96"></a>
+      <a href="https://youtube.com/@nextgendoctors" target="_blank" rel="noopener" aria-label="YouTube"><img src="assets/social-youtube.png" alt="" width="96" height="96"></a>
+      <a href="https://linkedin.com/company/next-gen-doctors" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/social-linkedin.png" alt="" width="96" height="96"></a>
+      <a href="https://wa.me/994772441903" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/social-whatsapp.png" alt="" width="96" height="96"></a>
+      <a href="https://t.me/nextgendoctors" target="_blank" rel="noopener" aria-label="Telegram"><img src="assets/social-telegram.png" alt="" width="96" height="96"></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- PAGE HEADER -->
+  <section class="section-dark page-header">
+    <div class="wrap reveal">
+      <p class="eyebrow eyebrow-on-dark"><span data-lang="az">BAĞLAN — Praktika</span><span data-lang="en">CONNECT — Practice</span></p>
+      <h1>
+        <span data-lang="az">İştirakçıların rəyləri</span>
+        <span data-lang="en">Participant Testimonials</span>
+      </h1>
+      <p class="lede">
+        <span data-lang="az">Tədbirlərimizdə iştirak etmiş şəxslərin təcrübə və rəyləri ilə tanış olun.</span>
+        <span data-lang="en">Learn about the experiences and feedback from our event participants.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL CARDS -->
+  <section class="section-raised">
+    <div class="wrap">
+      <div class="praktika-grid" id="testiGrid">
+        <!-- Cards will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/logo-mark.png" alt="" width="309" height="160">
+          <span class="brand-text">Next Gen Doctors</span>
+        </a>
+        <p><span data-lang="az">Gənc tibb tələbələrini aparıcı həkimlərlə birləşdirən icma platforması.</span><span data-lang="en">The community platform connecting young medical students with leading physicians.</span></p>
+      </div>
+      <div class="foot-col">
+        <h4><span data-lang="az">Naviqasiya</span><span data-lang="en">Navigate</span></h4>
+        <ul>
+          <li><a href="haqqimizda.html"><span data-lang="az">Haqqımızda</span><span data-lang="en">About</span></a></li>
+          <li><a href="index.html#fealiyyetler"><span data-lang="az">Fəaliyyətlər</span><span data-lang="en">Activities</span></a></li>
+          <li><a href="konfrans.html"><span data-lang="az">Konfranslar</span><span data-lang="en">Conferences</span></a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4><span data-lang="az">İcma</span><span data-lang="en">Community</span></h4>
+        <ul>
+          <li><a href="praktika.html"><span data-lang="az">Praktika</span><span data-lang="en">Practice</span></a></li>
+          <li><a href="index.html#baxis"><span data-lang="az">Tərəfdaşlar</span><span data-lang="en">Partners</span></a></li>
+          <li><a href="index.html#qosul"><span data-lang="az">Bizə Qoşulun</span><span data-lang="en">Join Us</span></a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4><span data-lang="az">Əlaqə</span><span data-lang="en">Contact</span></h4>
+        <ul>
+          <li><a class="contact-item" href="https://wa.me/994772441903" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.3 0 .7-.2 1L6.6 10.8Z"></path></svg>
+            +994 77 244 19 03
+          </a></li>
+          <li><a class="contact-item" href="mailto:nextgendoctors@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>
+            nextgendoctors@gmail.com
+          </a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-lang="az">© 2024–2026 Next Gen Doctors. Bütün hüquqlar qorunur.</span>
+      <span data-lang="en">© 2024–2026 Next Gen Doctors. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="testi-modal-overlay" id="testiModal">
+  <div class="testi-modal">
+    <button class="testi-modal-close" id="testiModalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+    </button>
+    <div id="testiModalContent"></div>
+  </div>
+</div>
+
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  /* ========================================
+     TESTIMONIAL DATA — placeholder nümunələr
+     Şəkil: assets/event-selfie.jpg (real)
+     Qalanları: boş placeholder
+  ======================================== */
+  var testimonials = [
+    {
+      name: "Ülkər Paşayeva",
+      role: "Tibb tələbəsi",
+      photo: "assets/ulker-pasayeva.jpg",
+      review: "Öncəliklə tibb tələbələri üçün belə bir şəraiti yaratdığı üçün Next Gen Doctors ailəsinə öz təşəkkürümü bildirirəm. Doktorun yanında praktika keçmək mənim üçün çox yaddaqalan oldu. Belə ki, bu praktika kardiologiya sahəsi ilə daha yaxından tanış olmaqla yanaşı, həkim-pasiyent ünsiyyətinin incəliklərini öyrənməyə də şərait yaratdı. Doktorun verdiyi tapşırıqlarla EKQ çəkmək, təzyiq ölçmək kimi baza vərdişləri sərbəst şəkildə tətbiq etdik. Həmçinin EXO, stress-test, angioqrafiya kimi mühüm prosesləri izləyərkən klinikanın digər tibb personalları da suallarımızı səbirlə cavablandırırdılar. Mühitin səmimi və öyrədici olması bizə böyük motivasiya verdi. Bunun üçün doktora, əməyi keçən tibb personallarına və sizin komandanıza minnətdaram. 🤍🩺 Belə layihələrin davamlı olması diləyi ilə. 👩🏼‍⚕️"
+    },
+    {
+      name: "Gəncalə Əhmədzadə",
+      role: "Tibb tələbəsi",
+      photo: "assets/gencale-ahmadzade.jpg",
+      review: "Praktika yaxşı idi, bəyəndim. Həm doktor kimi savadlı həkimlə tanışma şansım oldu, həm də yeni şeylər öyrəndim. Kardiologiya keçmişdik biz, amma rezidenturaya hazırlaşmaq problemlerinə görə vaxt olmurdu dinləməyə, verimsiz olurdu, ona görə praktikada bilmədiklərimi də öyrəndim. 🫠"
+    },
+    {
+      name: "Əhmədova Sədaqət",
+      role: "Tibb tələbəsi",
+      photo: "assets/sadagat-ahmadova.jpg",
+      review: "Bu 1 həftəlik praktikada həm həkimin, həm klinika işçilərinin xoş rəftarı bizdə müsbət iz qoydu. Həm kardiologiya sahəsində müayinələrlə yaxından tanış olduq, həm də gələcək karyeramızda dəyişikliklər yaradacaq məlumatlar öyrəndik. ☺️ Bunun üçün NGD teama sonsuz təşəkkürlərimi bildirirəm."
+    }
+  ];
+
+  var grid = document.getElementById('testiGrid');
+  var modal = document.getElementById('testiModal');
+  var modalContent = document.getElementById('testiModalContent');
+  var modalClose = document.getElementById('testiModalClose');
+  var isAZ = function(){ return document.documentElement.getAttribute('lang') === 'az'; };
+
+  /* -- Kartları yarat -- */
+  function renderCards(){
+    grid.innerHTML = '';
+    testimonials.forEach(function(t, i){
+      var card = document.createElement('div');
+      card.className = 'testi-card';
+      card.setAttribute('data-index', i);
+
+      if(t.name && t.photo){
+        card.innerHTML =
+          '<div class="testi-card-inner">' +
+            /* Front */
+            '<div class="testi-front">' +
+              '<div class="testi-front-photo">' +
+                '<img src="' + t.photo + '" alt="' + t.name + '" loading="lazy">' +
+                '<div class="photo-label">' +
+                  '<div><div class="testi-front-name">' + t.name + '</div><div class="testi-front-role">' + t.role + '</div></div>' +
+                  '<div class="testi-front-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            /* Back */
+            '<div class="testi-back">' +
+              '<div class="testi-back-header">' +
+                '<div class="testi-back-name">' + t.name + '</div>' +
+                '<div class="testi-back-role">' + t.role + '</div>' +
+              '</div>' +
+              '<div class="testi-back-divider"></div>' +
+              '<div class="testi-back-text">' + t.review + '</div>' +
+              '<div class="testi-back-footer">' +
+                '<span class="testi-back-read">' + (isAZ() ? 'Tam oxu' : 'Read more') + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></span>' +
+                '<div class="testi-back-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        card.addEventListener('click', function(){ openModal(t); });
+      } else {
+        card.className = 'testi-card testi-card-empty';
+        card.innerHTML =
+          '<svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>' +
+          '<span>' + (isAZ() ? 'Tezliklə əlavə olunacaq' : 'Coming soon') + '</span>';
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  /* -- Modal aç -- */
+  function openModal(t){
+    var html = '';
+    if(t.photo){
+      html += '<img class="testi-modal-photo" src="' + t.photo + '" alt="' + t.name + '">';
+    } else {
+      html += '<div class="testi-modal-photo-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg></div>';
+    }
+    html += '<div class="testi-modal-body">';
+    html += '<div class="testi-modal-name">' + t.name + '</div>';
+    html += '<div class="testi-modal-role">' + t.role + '</div>';
+    html += '<div class="testi-modal-divider"></div>';
+    html += '<div class="testi-modal-text">' + t.review + '</div>';
+    html += '</div>';
+    modalContent.innerHTML = html;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  /* -- Modal bağla -- */
+  function closeModal(){
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  /* -- Dil dəyişikliyində yenilə -- */
+  window.addEventListener('langchange', renderCards);
+  var origApplyLang = window.applyLang;
+  if(typeof origApplyLang === 'function'){
+    window.applyLang = function(lang){
+      origApplyLang(lang);
+      renderCards();
+    };
+  }
+
+  renderCards();
+})();
+</script>
+</body>
+</html>
