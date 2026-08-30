@@ -4,7 +4,7 @@
   //  Bu link bütün səhifələrdəki "Bizə Qoşul" və "Qeydiyyatdan Keç"
   //  düymələrində avtomatik istifadə olunacaq.
   // ============================================================
-  var NGD_JOIN_URL = "";
+  var NGD_JOIN_URL = "https://forms.gle/KVP1ce8GPTLTugpK9";
 
   // language toggle
   var langToggle = document.getElementById('langToggle');
