@@ -155,9 +155,11 @@
   .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
-  /* ---- video intro (full-width, full video visible) ---- */
-  .video-intro{ position:relative; width:100%; padding:0; margin:0; line-height:0; }
-  .video-intro-wrap{ position:relative; width:100%; }
+  /* ---- video intro ----
+     Keep the complete 16:9 video visible without letting it dominate
+     the first screen on wide displays. */
+  .video-intro{ position:relative; width:100%; padding:clamp(0.5rem, 1.4vw, 1rem) 0; margin:0; line-height:0; background:var(--navy-deep); }
+  .video-intro-wrap{ position:relative; width:min(100%, 1000px); margin:0 auto; }
   .intro-video{ width:100%; display:block; }
 
   /* ---- hero ---- */
@@ -447,9 +449,7 @@
     display:flex; align-items:center; justify-content:center; gap:1.5rem;
   }
   .notice strong{ color:var(--green); font-weight:600; }
-  .notice-msg{ text-align:center; }
   .notice-contact, .notice-social{ display:flex; align-items:center; gap:1rem; flex:1; min-width:0; }
-  .notice-msg{ min-width:0; }
   .notice-social{ justify-content:flex-end; gap:0.5rem; }
   .notice-contact a{ display:inline-flex; align-items:center; gap:0.35rem; color:#AEB4DA; text-decoration:none; white-space:nowrap; }
   .notice-contact a:hover{ color:#fff; }
@@ -572,7 +572,8 @@
     .nav-links{ display:none; }
     .nav-cta-desktop{ display:none; }
     .menu-toggle{ display:flex; }
-    .notice-contact, .notice-social{ display:none; }
+    .notice-contact{ display:none; }
+    .notice-social{ justify-content:center; }
     .notice{ justify-content:center; }
     .brand img{ height:34px; }
     .brand-text{ font-size:1.05rem; }
