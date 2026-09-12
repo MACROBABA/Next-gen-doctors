@@ -159,6 +159,9 @@
     var MED_DAYS_LASTDAY = [
       {m:2, az:'Ümumdünya Nadir Xəstəliklər Günü', en:'Rare Disease Day', field:true}
     ];
+    var PLANNED_ACTIVITIES = (window.NGD_ACTIVITIES || []).filter(function(ev){
+      return !!ev.category;
+    });
     function nthWeekdayOfMonth(year, monthIdx, nth, weekday){
       var d = new Date(year, monthIdx, 1);
       var offset = (weekday - d.getDay() + 7) % 7;
@@ -191,6 +194,11 @@
           list.push({ d: lastDayOfMonth(year, monthIdx), az: ev.az, en: ev.en, field: !!ev.field });
         }
       });
+      PLANNED_ACTIVITIES.forEach(function(ev){
+        if (ev.year === year && ev.m === monthIdx + 1){
+          list.push({ d: ev.d, az: ev.az, en: ev.en, time: ev.time || '', slug: ev.slug, category: ev.category, activity:true });
+        }
+      });
       return list;
     }
     var MONTH_AZ = ['Yanvar','Fevral','Mart','Aprel','May','İyun','İyul','Avqust','Sentyabr','Oktyabr','Noyabr','Dekabr'];
@@ -205,22 +213,44 @@
 
     function lang(){ return document.documentElement.getAttribute('lang') || 'az'; }
     function dayName(item){ return lang() === 'en' ? item.en : item.az; }
+    function escapeHTML(value){
+      return String(value).replace(/[&<>"']/g, function(ch){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch];
+      });
+    }
+    function activityHref(item){
+      var categories = window.NGD_ACTIVITY_CATEGORIES || {};
+      var category = categories[item.category];
+      return category ? category.page + '#planlasdirilmis-fealiyyetler' : '#';
+    }
 
     var currentEvents = {};
 
-    function renderInfo(item){
-      if(!item){
+    function renderInfo(items){
+      calInfo.classList.toggle('has-selection', !!(items && items.length));
+      if(!items || !items.length){
         calInfo.innerHTML = lang() === 'en'
-          ? '<p class="empty">Tap a date with a medical observance.</p>'
-          : '<p class="empty">Tibb günü olan tarixə toxunun.</p>';
+          ? '<p class="empty">Hover over or select a marked date to see the activity.</p>'
+          : '<p class="empty">Fəaliyyət və ya tibb günü olan tarixi seçin.</p>';
         return;
       }
-      var lbl = item.field
-        ? (lang() === 'en' ? 'Medical Field Day' : 'Tibb Sahəsi Günü')
-        : (lang() === 'en' ? 'Marked Today' : 'Qeyd Olunan Gün');
-      calInfo.innerHTML =
-        '<span class="lbl">' + lbl + '</span>' +
-        '<div class="name">' + dayName(item) + '</div>';
+      var orderedItems = items.slice().sort(function(a, b){ return (b.activity ? 1 : 0) - (a.activity ? 1 : 0); });
+      calInfo.innerHTML = orderedItems.map(function(item){
+        var label = item.activity
+          ? (lang() === 'en' ? 'Planned activity' : 'Planlaşdırılmış fəaliyyət')
+          : (item.field
+            ? (lang() === 'en' ? 'Medical Field Day' : 'Tibb Sahəsi Günü')
+            : (lang() === 'en' ? 'Health Awareness Day' : 'Sağlamlıq Günü'));
+        var time = item.time ? '<span class="cal-time">' + escapeHTML(item.time) + '</span>' : '';
+        var name = '<span class="name">' + escapeHTML(dayName(item)) + '</span>';
+        if(item.activity){
+          return '<a class="cal-activity-link" href="' + activityHref(item) + '">' +
+            '<span class="lbl">' + label + '</span>' + name + time +
+            '<span class="cal-link-label">' + (lang() === 'en' ? 'View activity' : 'Fəaliyyətə bax') + ' <b aria-hidden="true">→</b></span>' +
+          '</a>';
+        }
+        return '<div class="cal-info-item"><span class="lbl">' + label + '</span>' + name + '</div>';
+      }).join('');
     }
 
     function selectCell(cell){
@@ -241,16 +271,24 @@
       var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
 
       currentEvents = {};
-      eventsForMonth(viewYear, viewMonth).forEach(function(ev){ currentEvents[ev.d] = ev; });
+      eventsForMonth(viewYear, viewMonth).forEach(function(ev){
+        if(!currentEvents[ev.d]) currentEvents[ev.d] = [];
+        currentEvents[ev.d].push(ev);
+      });
 
       var html = '';
       for (var i = 0; i < offset; i++) html += '<span class="cal-day is-blank"></span>';
       for (var d = 1; d <= daysInMonth; d++) {
-        var ev = currentEvents[d];
+        var events = currentEvents[d] || [];
         var isToday = viewYear === today.getFullYear() && viewMonth === today.getMonth() && d === today.getDate();
-        var cls = 'cal-day' + (isToday ? ' is-today' : '') + (ev ? ' has-event' : '') + (ev && ev.field ? ' is-field' : '');
-        var attrs = ev ? ' title="' + dayName(ev).replace(/"/g, '&quot;') + '"' : '';
-        html += '<span class="' + cls + '" data-day="' + d + '"' + attrs + '>' + d + '</span>';
+        var hasActivity = events.some(function(ev){ return ev.activity; });
+        var hasField = events.some(function(ev){ return ev.field; });
+        var titles = events.map(dayName).join(' • ');
+        var cls = 'cal-day' + (isToday ? ' is-today' : '') + (events.length ? ' has-event' : '') + (hasField ? ' is-field' : '') + (hasActivity ? ' is-activity' : '');
+        var attrs = events.length ? ' title="' + escapeHTML(titles) + '" aria-label="' + escapeHTML(d + ': ' + titles) + '"' : '';
+        html += events.length
+          ? '<button type="button" class="' + cls + '" data-day="' + d + '"' + attrs + '>' + d + '</button>'
+          : '<span class="' + cls + '" data-day="' + d + '">' + d + '</span>';
       }
       calGrid.innerHTML = html;
       activeCell = null;
@@ -268,6 +306,14 @@
     calGrid.addEventListener('click', function(e){
       var cell = e.target.closest('.cal-day.has-event');
       if (cell) selectCell(cell);
+    });
+    calGrid.addEventListener('mouseover', function(e){
+      var cell = e.target.closest('.cal-day.has-event');
+      if (cell && cell !== activeCell) selectCell(cell);
+    });
+    calGrid.addEventListener('focusin', function(e){
+      var cell = e.target.closest('.cal-day.has-event');
+      if (cell && cell !== activeCell) selectCell(cell);
     });
     calPrev.addEventListener('click', function(){
       viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }

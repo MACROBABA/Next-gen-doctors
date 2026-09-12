@@ -414,24 +414,27 @@
     <div class="wrap reveal">
       <div class="section-head section-head--center">
         <p class="eyebrow"><span data-lang="az">Tibb Təqvimi</span><span data-lang="en">Medical Calendar</span></p>
-        <h2><span data-lang="az">Beynəlxalq Tibb Günləri</span><span data-lang="en">International Health Observance Days</span></h2>
-        <p><span data-lang="az">İldə bir dəfə qeyd olunan tibb və sağlamlıq günlərini izləyin.</span><span data-lang="en">Follow the health and medical observance days marked throughout the year.</span></p>
+        <h2><span data-lang="az">Tibb günləri və fəaliyyətlər</span><span data-lang="en">Health observances and activities</span></h2>
+        <p><span data-lang="az">Beynəlxalq tibb günlərini və Next Gen Doctors fəaliyyət planını izləyin.</span><span data-lang="en">Follow international health observances and the Next Gen Doctors activity plan.</span></p>
       </div>
       <div class="med-calendar">
-        <div class="cal-header">
-          <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg>
-          </button>
-          <div class="cal-title" id="calTitle"></div>
-          <button type="button" class="cal-nav" id="calNext" aria-label="Next month">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg>
-          </button>
-        </div>
-        <div class="cal-weekdays" id="calWeekdays"></div>
-        <div class="cal-grid" id="calGrid"></div>
-        <div class="cal-legend">
-          <span><span class="dot green"></span><span data-lang="az">Sağlamlıq Günü</span><span data-lang="en">Health Awareness Day</span></span>
-          <span><span class="dot indigo"></span><span data-lang="az">Tibb Sahəsi Günü</span><span data-lang="en">Medical Field Day</span></span>
+        <div class="cal-main">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg>
+            </button>
+            <div class="cal-title" id="calTitle"></div>
+            <button type="button" class="cal-nav" id="calNext" aria-label="Next month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg>
+            </button>
+          </div>
+          <div class="cal-weekdays" id="calWeekdays"></div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="cal-legend">
+            <span><span class="dot green"></span><span data-lang="az">Sağlamlıq Günü</span><span data-lang="en">Health Awareness Day</span></span>
+            <span><span class="dot indigo"></span><span data-lang="az">Tibb Sahəsi Günü</span><span data-lang="en">Medical Field Day</span></span>
+            <span><span class="dot teal"></span><span data-lang="az">Fəaliyyət</span><span data-lang="en">Activity</span></span>
+          </div>
         </div>
         <div class="cal-info" id="calInfo"></div>
       </div>
@@ -555,6 +558,7 @@
   </div>
 </footer>
 
+<script src="assets/activities.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>
