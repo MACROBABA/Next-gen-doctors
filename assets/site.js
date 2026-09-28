@@ -10,9 +10,11 @@
   var langToggle = document.getElementById('langToggle');
   function applyLang(lang){
     document.documentElement.setAttribute('lang', lang);
-    langToggle.querySelectorAll('button').forEach(function(b){
-      b.classList.toggle('active', b.getAttribute('data-set-lang') === lang);
-    });
+    if(langToggle){
+      langToggle.querySelectorAll('button').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-set-lang') === lang);
+      });
+    }
     try{ localStorage.setItem('ngd-lang', lang); }catch(e){}
     if (window.renderMedCalendar) window.renderMedCalendar();
     var goBtn = document.querySelector('.go-top');
@@ -20,11 +22,13 @@
     if (window.NGD_CHAT && window.NGD_CHAT.setLang) window.NGD_CHAT.setLang(lang);
     try{ window.dispatchEvent(new CustomEvent('langchange', {detail:{lang:lang}})); }catch(e){}
   }
-  langToggle.addEventListener('click', function(e){
-    var btn = e.target.closest('button[data-set-lang]');
-    if(!btn) return;
-    applyLang(btn.getAttribute('data-set-lang'));
-  });
+  if(langToggle){
+    langToggle.addEventListener('click', function(e){
+      var btn = e.target.closest('button[data-set-lang]');
+      if(!btn) return;
+      applyLang(btn.getAttribute('data-set-lang'));
+    });
+  }
   var savedLang = 'az';
   try{ savedLang = localStorage.getItem('ngd-lang') || 'az'; }catch(e){}
   applyLang(savedLang);
@@ -36,16 +40,31 @@
   // mobile menu
   var menuToggle = document.getElementById('menuToggle');
   var mobileMenu = document.getElementById('mobileMenu');
-  menuToggle.addEventListener('click', function(){
-    var open = mobileMenu.classList.toggle('open');
-    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  mobileMenu.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){
-      mobileMenu.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
+  function closeMobileMenu(){
+    if(!menuToggle || !mobileMenu) return;
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mobile-menu-open');
+  }
+  if(menuToggle && mobileMenu){
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    menuToggle.addEventListener('click', function(){
+      var open = mobileMenu.classList.toggle('open');
+      mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('mobile-menu-open', open);
     });
-  });
+    mobileMenu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeMobileMenu);
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMobileMenu();
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 980) closeMobileMenu();
+    });
+  }
 
   // scroll reveal
   var els = document.querySelectorAll('.reveal');
