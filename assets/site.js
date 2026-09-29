@@ -89,27 +89,45 @@
     el.dataset.countSuffix = match[2];
     if(!reduceMotion) el.textContent = '0' + match[2];
   });
-  if(!reduceMotion && 'IntersectionObserver' in window){
-    var countIo = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(!entry.isIntersecting || !entry.target.dataset.countTarget) return;
-        countIo.unobserve(entry.target);
-        var el = entry.target;
-        var target = parseInt(el.dataset.countTarget, 10);
-        var suffix = el.dataset.countSuffix || '';
-        var duration = 5000;
-        var start = null;
-        function step(ts){
-          if(start === null) start = ts;
-          var progress = Math.min((ts - start) / duration, 1);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(eased * target) + suffix;
-          if(progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-      });
-    }, { threshold: 0.4 });
-    countEls.forEach(function(el){ if(el.dataset.countTarget) countIo.observe(el); });
+  function animateCount(el){
+    if(!el || !el.dataset.countTarget || el.dataset.countStarted) return;
+    el.dataset.countStarted = 'true';
+    var target = parseInt(el.dataset.countTarget, 10);
+    var suffix = el.dataset.countSuffix || '';
+    var duration = 1600;
+    var start = null;
+    function step(ts){
+      if(start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if(!reduceMotion){
+    var isMobile = window.matchMedia('(max-width: 980px)').matches;
+    if(!isMobile && 'IntersectionObserver' in window){
+      var countIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting) return;
+          countIo.unobserve(entry.target);
+          animateCount(entry.target);
+        });
+      }, { threshold: 0.15 });
+      countEls.forEach(function(el){ if(el.dataset.countTarget) countIo.observe(el); });
+    } else {
+      var checkMobileCounts = function(){
+        countEls.forEach(function(el){
+          if(!el.dataset.countTarget || el.dataset.countStarted) return;
+          var rect = el.getBoundingClientRect();
+          if(rect.top < window.innerHeight * 0.95 && rect.bottom > 0) animateCount(el);
+        });
+      };
+      window.addEventListener('scroll', checkMobileCounts, { passive:true });
+      window.addEventListener('resize', checkMobileCounts, { passive:true });
+      window.setTimeout(checkMobileCounts, 120);
+    }
   }
 
   // medical calendar
@@ -459,16 +477,20 @@
     onScroll();
 
     // — Scroll reveal (staggered) —
-    var revealObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
+    if('IntersectionObserver' in window){
+      var revealObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
 
-    document.querySelectorAll('.reveal').forEach(function(el){
-      revealObserver.observe(el);
-    });
+      document.querySelectorAll('.reveal').forEach(function(el){
+        revealObserver.observe(el);
+      });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in-view'); });
+    }
   })();

@@ -609,6 +609,13 @@
   .chat-note{ font-size:0.68rem; color:var(--slate-2); text-align:center; padding:0 1rem 0.6rem; background:#fff; }
 
   @media (max-width:980px){
+    /* iOS Safari can delay intersection callbacks for transformed or lazy images.
+       Keep mobile content visible instead of waiting for a reveal animation. */
+    .reveal,
+    .conf-card,
+    .impact-tag,
+    .network-photo-grid .photo-cell{ opacity:1; transform:none; }
+    .parallax-bg{ will-change:auto; transform:none !important; }
     .nav-links{ display:none; }
     .nav-cta-desktop{ display:none; }
     .menu-toggle{ display:flex; }
