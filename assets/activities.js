@@ -12,6 +12,11 @@
       az: 'Seminar & Master-klass',
       en: 'Seminar & Masterclasses'
     },
+        workshop: {
+      page: 'workshop.html',
+      az: 'Workshop',
+      en: 'Workshop'
+    },
     infotur: {
       page: 'infotur.html',
       az: 'İnfotur',
