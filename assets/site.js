@@ -32,6 +32,29 @@
   var savedLang = 'az';
   try{ savedLang = localStorage.getItem('ngd-lang') || 'az'; }catch(e){}
   applyLang(savedLang);
+  // Workshop keçidini bütün desktop və mobil fəaliyyət menyularına əlavə et.
+  // Bu, ortaq menyu HTML-i bütün səhifələrdə təkrarlansa da, keçidin hər yerdə
+  // eyni qalmasını təmin edir.
+  function addWorkshopNavigation(){
+    var workshopLink = '<a href="workshop.html"><span data-lang="az">Workshop</span><span data-lang="en">Workshop</span></a>';
+    document.querySelectorAll('.dropdown-panel ul').forEach(function(list){
+      if(list.querySelector('a[href="workshop.html"]')) return;
+      var item = document.createElement('li');
+      item.innerHTML = workshopLink;
+      var seminar = list.querySelector('a[href="seminar-masterklass.html"]');
+      if(seminar && seminar.parentElement) seminar.parentElement.insertAdjacentElement('afterend', item);
+      else list.appendChild(item);
+    });
+    document.querySelectorAll('.mobile-submenu').forEach(function(list){
+      if(list.querySelector('a[href="workshop.html"]')) return;
+      var item = document.createElement('li');
+      item.innerHTML = '<a href="workshop.html"><span data-lang="az">— Workshop</span><span data-lang="en">— Workshop</span></a>';
+      var seminar = list.querySelector('a[href="seminar-masterklass.html"]');
+      if(seminar && seminar.parentElement) seminar.parentElement.insertAdjacentElement('afterend', item);
+      else list.appendChild(item);
+    });
+  }
+  addWorkshopNavigation();
 
   // Add playsinline to video (iOS Safari support, added via JS to avoid HTML validator warning)
   var introVideo = document.querySelector('.intro-video');
