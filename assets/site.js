@@ -89,6 +89,41 @@
     });
   }
 
+  // Courses link in every shared header
+  (function(){
+    function makeLink(isMobile){
+      var li = document.createElement('li');
+      li.innerHTML = '<a href="kurslar.html"><span data-lang="az">Kurslar</span><span data-lang="en">Courses</span></a>';
+      if(isMobile) li.className = 'mobile-course-link';
+      return li;
+    }
+    document.querySelectorAll('.nav-links').forEach(function(list){
+      if(list.querySelector('a[href="kurslar.html"]')) return;
+      var before = list.querySelector('a[href="praktika.html"]');
+      list.insertBefore(makeLink(false), before ? before.closest('li') : null);
+    });
+    document.querySelectorAll('.mobile-menu-links').forEach(function(list){
+      if(list.querySelector('a[href="kurslar.html"]')) return;
+      var before = list.querySelector('a[href="praktika.html"]');
+      list.insertBefore(makeLink(true), before ? before.closest('li') : null);
+    });
+  })();
+
+  // Workshop link inside the activities menus
+  (function(){
+    function makeWorkshopLink(prefix){
+      var li = document.createElement('li');
+      li.innerHTML = '<a href="workshop.html"><span data-lang="az">' + prefix + 'Workshop</span><span data-lang="en">' + prefix + 'Workshop</span></a>';
+      return li;
+    }
+    document.querySelectorAll('.dropdown-panel ul').forEach(function(list){
+      if(!list.querySelector('a[href="workshop.html"]')) list.appendChild(makeWorkshopLink(''));
+    });
+    document.querySelectorAll('.mobile-submenu').forEach(function(list){
+      if(!list.querySelector('a[href="workshop.html"]')) list.appendChild(makeWorkshopLink('— '));
+    });
+  })();
+
   // scroll reveal
   var els = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
